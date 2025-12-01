@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @Entity
-public class Service {
+public class ServiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +33,9 @@ public class Service {
     @NotBlank(message = "A categoria é obrigatória.")
     private String categoria;
 
-    public Service() { }
+    public ServiceEntity() { }
 
-    public Service(String nome, String descricao, Double precoBase, List<String> atividades, String categoria) {
+    public ServiceEntity(String nome, String descricao, Double precoBase, List<String> atividades, String categoria) {
         this.nome = nome;
         this.descricao = descricao;
         this.precoBase = precoBase;
