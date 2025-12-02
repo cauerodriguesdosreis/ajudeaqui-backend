@@ -17,21 +17,21 @@ public class ServiceController {
     @Autowired
     private ServiceService serviceService;
 
-    // CREATE
-    @PostMapping
+
+    @PostMapping("criando")
     public ResponseEntity<ServiceDTO> createService(@Valid @RequestBody ServiceDTO serviceDTO) {
         ServiceDTO createdService = serviceService.createService(serviceDTO);
         return new ResponseEntity<>(createdService, HttpStatus.CREATED);
     }
 
-    // READ ALL
-    @GetMapping
+
+    @GetMapping("/{id}")
     public ResponseEntity<List<ServiceDTO>> getAllServices() {
         List<ServiceDTO> services = serviceService.getAllServices();
         return new ResponseEntity<>(services, HttpStatus.OK);
     }
 
-    // READ BY ID
+
     @GetMapping("/{id}")
     public ResponseEntity<ServiceDTO> getServiceById(@PathVariable Long id) {
         ServiceDTO service = serviceService.getServiceById(id);
@@ -41,7 +41,7 @@ public class ServiceController {
         return new ResponseEntity<>(service, HttpStatus.OK);
     }
 
-    // UPDATE
+
     @PutMapping("/{id}")
     public ResponseEntity<ServiceDTO> updateService(@PathVariable Long id, @Valid @RequestBody ServiceDTO serviceDTO) {
         ServiceDTO updatedService = serviceService.updateService(id, serviceDTO);
@@ -51,7 +51,7 @@ public class ServiceController {
         return new ResponseEntity<>(updatedService, HttpStatus.OK);
     }
 
-    // DELETE
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteService(@PathVariable Long id) {
         boolean deleted = serviceService.deleteService(id);

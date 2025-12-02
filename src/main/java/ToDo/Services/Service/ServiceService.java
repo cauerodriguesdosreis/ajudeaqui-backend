@@ -5,7 +5,12 @@ import ToDo.Services.Entity.ServiceEntity;
 import ToDo.Services.Repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,27 +21,33 @@ public class ServiceService {
     @Autowired
     private ServiceRepository serviceRepository;
 
-    // CREATE
+   @PostMapping(value = "/create")
     public ServiceDTO createService(ServiceDTO serviceDTO) {
         ServiceEntity service = toEntity(serviceDTO);
         ServiceEntity savedService = serviceRepository.save(service);
         return toDTO(savedService);
     }
 
-    // READ ALL
+    @GetMapping("/all")
     public List<ServiceDTO> getAllServices() {
-        return serviceRepository.findAll().stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+        List<ServiceDTO> serviceDTOs = new ArrayList<>();
+        List<ServiceEntity> services = serviceRepository.findAll();
+        for (ServiceEntity service : services) {
+            serviceDTOs.add(toDTO(service));
+        }
+        return serviceDTOs;
     }
 
-    // READ BY ID
+    @GetMapping(value = "/{id}")
     public ServiceDTO getServiceById(Long id) {
-        Optional<ServiceEntity> service = serviceRepository.findById(id);
-        return service.map(this::toDTO).orElse(null);
+        ServiceEntity service = serviceRepository.findById(id).orElse(null);
+        if (service == null) {
+            return null;
+        }
+        return toDTO(service);
     }
 
-    // UPDATE
+    @PutMapping(value = "/{id}")
     public ServiceDTO updateService(Long id, ServiceDTO serviceDTO) {
         if (!serviceRepository.existsById(id)) {
             return null;
@@ -47,7 +58,7 @@ public class ServiceService {
         return toDTO(updatedService);
     }
 
-    // DELETE
+    @DeleteMapping(value = "/{id}")
     public boolean deleteService(Long id) {
         if (!serviceRepository.existsById(id)) {
             return false;
@@ -56,26 +67,24 @@ public class ServiceService {
         return true;
     }
 
-    // Converter Entity para DTO
     private ServiceDTO toDTO(ServiceEntity service) {
-        return new ServiceDTO(
-                service.getId(),
-                service.getNome(),
-                service.getDescricao(),
-                service.getPrecoBase(),
-                service.getAtividades(),
-                service.getCategoria()
-        );
+        ServiceDTO dto = new ServiceDTO();
+        dto.setId(service.getId());
+        dto.setNome(service.getNome());
+        dto.setDescricao(service.getDescricao());
+        dto.setPrecoBase(service.getPrecoBase());
+        dto.setAtividades(service.getAtividades());
+        dto.setCategoria(service.getCategoria());
+        return dto;
     }
 
-    // Converter DTO para Entity
     private ServiceEntity toEntity(ServiceDTO serviceDTO) {
-        return new ServiceEntity(
-                serviceDTO.getNome(),
-                serviceDTO.getDescricao(),
-                serviceDTO.getPrecoBase(),
-                serviceDTO.getAtividades(),
-                serviceDTO.getCategoria()
-        );
+        ServiceEntity entity = new ServiceEntity();
+        entity.setNome(serviceDTO.getNome());
+        entity.setDescricao(serviceDTO.getDescricao());
+        entity.setPrecoBase(serviceDTO.getPrecoBase());
+        entity.setAtividades(serviceDTO.getAtividades());
+        entity.setCategoria(serviceDTO.getCategoria());
+        return entity;
     }
 }
