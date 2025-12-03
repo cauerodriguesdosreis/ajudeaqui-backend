@@ -21,7 +21,7 @@ public class ServiceService {
     @Autowired
     private ServiceRepository serviceRepository;
 
-   @PostMapping(value = "/create")
+   @PostMapping(value = "/criando")
     public ServiceDTO createService(ServiceDTO serviceDTO) {
         ServiceEntity service = toEntity(serviceDTO);
         ServiceEntity savedService = serviceRepository.save(service);
@@ -47,7 +47,7 @@ public class ServiceService {
         return toDTO(service);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/editando")
     public ServiceDTO updateService(Long id, ServiceDTO serviceDTO) {
         if (!serviceRepository.existsById(id)) {
             return null;
@@ -58,7 +58,7 @@ public class ServiceService {
         return toDTO(updatedService);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/deletando")
     public boolean deleteService(Long id) {
         if (!serviceRepository.existsById(id)) {
             return false;

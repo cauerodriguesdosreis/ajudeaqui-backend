@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/services")
+@RequestMapping("/api")
 public class ServiceController {
 
     @Autowired
     private ServiceService serviceService;
 
 
-    @PostMapping("criando")
+    @PostMapping("/criando")
     public ResponseEntity<ServiceDTO> createService(@Valid @RequestBody ServiceDTO serviceDTO) {
         ServiceDTO createdService = serviceService.createService(serviceDTO);
         return new ResponseEntity<>(createdService, HttpStatus.CREATED);
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/all")
     public ResponseEntity<List<ServiceDTO>> getAllServices() {
         List<ServiceDTO> services = serviceService.getAllServices();
         return new ResponseEntity<>(services, HttpStatus.OK);
@@ -42,7 +42,7 @@ public class ServiceController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizando/{id}")
     public ResponseEntity<ServiceDTO> updateService(@PathVariable Long id, @Valid @RequestBody ServiceDTO serviceDTO) {
         ServiceDTO updatedService = serviceService.updateService(id, serviceDTO);
         if (updatedService == null) {
@@ -52,7 +52,7 @@ public class ServiceController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletando/{id}")
     public ResponseEntity<Void> deleteService(@PathVariable Long id) {
         boolean deleted = serviceService.deleteService(id);
         if (!deleted) {

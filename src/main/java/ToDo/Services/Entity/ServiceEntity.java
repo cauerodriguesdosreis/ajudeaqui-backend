@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @Entity
+@Table(name = "service")
 public class ServiceEntity {
 
     @Id
